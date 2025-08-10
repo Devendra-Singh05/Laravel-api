@@ -9,48 +9,84 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        return response()->json(Category::all());
+        //
+        try{
+             return response()->json(Category::all());
+        }catch(\Throwable $e){
+            return response(["message"=>"internal server error"],500);
+        }
+       
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+        //
+        try{
+        $request->validate([
+            'name'=>'required|string|max:50',
+            'description'=>'required|max:500'
         ]);
-
-        $category = Category::create($validated);
-        return response()->json($category, 201);
+         return response()->json([Category::create($request->all()),"message"=>"data saved successfully"],200);
+    }
+    catch(\Throwable $e){
+         return response()->json(["message"=>"data not saved"],422);
+        
+    }
+        
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show($id)
     {
-        $category = Category::find($id);
-        if (!$category) {
-            return response()->json(['message' => 'Category not found'], 404);
+        //
+        try{
+            $ci=Category::find($id);
+            return response()->json($ci);
         }
-        return response()->json($category);
+        catch(\Throwable $e){
+            return response()->json(["message"=>"data not found"],404);
+        }
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        $category = Category::find($id);
-        if (!$category) {
-            return response()->json(['message' => 'Category not found'], 404);
-        }
-
-        $category->update($request->only(['name', 'description']));
-        return response()->json($category);
+        //
+                try{
+                    $ci=Category::find($id);
+                    
+        $request->validate([
+            'name'=>'required|string|max:50',
+            'description'=>'required|max:500'
+        ]);
+         return response()->json([$ci->update($request->all()),"message"=>"data updated successfully"],200);
+    }
+    catch(\Throwable $e){
+         return response()->json(["message"=>"data not updated"],422);
+        
+    }
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
     {
-        $category = Category::find($id);
-        if (!$category) {
-            return response()->json(['message' => 'Category not found'], 404);
+        //
+        try{
+         $ci=Category::find($id);
+        
+         return response()->json([ $ci->delete(),"message"=>"data deleted successfully"],200);
         }
-
-        $category->delete();
-        return response()->json(['message' => 'Category deleted']);
+        catch(\Throwable $e){
+            return response()->json(["message"=>"data not deleted"],422);
+        }
     }
 }
