@@ -14,13 +14,22 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        //
-     $fd = Factory::create();
-     for($i = 0; $i < 10; $i++){
-        Category::create([
-            'name' => $fd->word(),
-            'description' => $fd->sentence(),
-        ]);
-     }
+        // fake data
+    //  $fd = Factory::create();
+    //  for($i = 0; $i < 10; $i++){
+    //     Category::create([
+    //         'name' => $fd->word(),
+    //         'description' => $fd->sentence(),
+    //     ]);
+    //  }
+
+
+    $data= [['name' => 'Electronics', 'description' => 'Latest gadgets and devices'],
+            ['name' => 'Clothing', 'description' => 'Men and Women fashion wear'],
+            ['name' => 'Home Appliances', 'description' => 'Home and kitchen essentials'],
+            ['name' => 'Books', 'description' => 'Educational and fiction books']];
+            foreach($data as $info){
+                Category::create($info);
+            }
     }
 }

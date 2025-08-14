@@ -24,17 +24,18 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
-        try{
+        // try{
         $request->validate([
             'name'=>'required|string|max:50',
             'description'=>'required|max:500'
         ]);
-         return response()->json([Category::create($request->all()),"message"=>"data saved successfully"],200);
-    }
-    catch(\Throwable $e){
-         return response()->json(["message"=>"data not saved"],422);
         
-    }
+         return response()->json([Category::create($request->all()),"message"=>"data saved successfully"],200);
+    // }
+    // catch(\Throwable $e){
+    //      return response()->json(["message"=>"data not saved"],422);
+        
+    // }
         
     }
 
